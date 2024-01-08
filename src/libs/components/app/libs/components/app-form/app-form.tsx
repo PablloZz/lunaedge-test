@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import {  Input } from "~/libs/components/components.js";
+import { Button, Input } from "~/libs/components/components.js";
 import { AppFormFields } from "./libs/types/app-form-fields.type.js";
 import { DEFAULT_APP_FORM_VALUES } from "./libs/constants/constants.js";
 
@@ -27,7 +27,7 @@ const AppForm: React.FC = () => {
         variant="text"
         label="Name:"
         placeholder="Name"
-        isRequired
+        required
       />
       <Input
         {...register("lastName", {
@@ -38,8 +38,9 @@ const AppForm: React.FC = () => {
         variant="password"
         label="Last Name:"
         placeholder="Last Name"
-        isRequired
+        required
       />
+      <Button variant="outline" icon="star" />
     </form>
   );
 };
