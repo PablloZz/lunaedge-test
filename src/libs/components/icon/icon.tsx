@@ -1,34 +1,40 @@
-import envelope from "~/assets/icons/envelope.icon.svg";
-import eye from "~/assets/icons/eye.icon.svg";
-import eyeSlash from "~/assets/icons/eye-slash.icon.svg";
+import Envelope from "~/assets/icons/envelope.icon.svg?react";
+import Eye from "~/assets/icons/eye.icon.svg?react";
+import EyeSlash from "~/assets/icons/eye-slash.icon.svg?react";
+import Star from "~/assets/icons/star.icon.svg?react";
+import CuretDown from "~/assets/icons/curet-down.icon.svg?react";
 
-type IconName = "envelope" | "eye" | "eyeSlash";
+type IconName = "envelope" | "eye" | "eyeSlash" | "star" | "curetDown";
 
-const iconNameToIcon: Record<IconName, string> = {
-  envelope,
-  eye,
-  eyeSlash,
+const iconNameToIcon: Record<
+  IconName,
+  React.FC<React.SVGProps<SVGSVGElement>>
+> = {
+  envelope: Envelope,
+  eye: Eye,
+  eyeSlash: EyeSlash,
+  star: Star,
+  curetDown: CuretDown,
 };
 
 type Properties = {
   iconName: IconName;
-  alt?: string;
+  ariaLabel?: string;
   ariaRole?: "img" | "none";
   className?: string;
 };
 
 const Icon: React.FC<Properties> = ({
   iconName,
-  alt = "",
+  ariaLabel = "",
   ariaRole = "none",
   className,
-}) => (
-  <img
-    src={iconNameToIcon[iconName]}
-    alt={alt}
-    role={ariaRole}
-    className={className}
-  />
-);
+}) => {
+  const SvgElement = iconNameToIcon[iconName];
+  return (
+    <SvgElement aria-label={ariaLabel} role={ariaRole} className={className} />
+  );
+};
 
 export { Icon };
+export { type IconName };
