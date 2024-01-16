@@ -40,7 +40,7 @@ const AppForm: React.FC = () => {
         placeholder="Last Name"
         required
       />
-      <Button variant="outline" icon="star" />
+      <Button type="submit" variant="outline" icon="star" label="Fight" />
     </form>
   );
 };
