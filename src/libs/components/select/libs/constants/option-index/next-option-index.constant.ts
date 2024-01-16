@@ -1,0 +1,3 @@
+const NEXT_OPTION_INDEX = 1;
+
+export { NEXT_OPTION_INDEX };
