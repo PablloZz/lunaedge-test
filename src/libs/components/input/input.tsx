@@ -38,31 +38,40 @@ const Input = forwardRef(
     };
 
     return (
-      <label className="flex flex-col gap-[8px]">
+      <label className="flex flex-col gap-2 w-full max-w-[400px]">
         <span className={labelClassName}>{label}</span>
         <div className="relative flex items-center">
           {variant === "email" && (
             <Icon
               iconName="envelope"
-              className="absolute left-[16px] text-black"
+              className={`absolute w-5 left-4 text-black ${
+                error?.message && "text-red-600"
+              }`}
             />
           )}
           <input
             type={inputType}
             id={useFormRegisterReturn.name}
             placeholder={placeholder}
+            required={required}
+            disabled={disabled}
             {...useFormRegisterReturn}
             ref={ref}
-            className={`w-[400px] h-[40px] rounded-[8px] border-[1px] py-[12px] ${
-              variant !== "email" ? "pl-[16px]" : "pl-[48px]"
-            } pr-[16px] flex align-center outline outline-blue-600 outline-0 hover:outline-2 focus:outline-2 ${className}`}
+            className={`w-full h-[40px] rounded-lg outline outline-1 outline-gray-300 py-3 ${
+              variant !== "email" ? "pl-4" : "pl-11"
+            } pr-4 flex align-center ${
+              disabled
+                ? "bg-sky-100 text-sky-200"
+                : "hover:outline-2 hover:outline-indigo-600"
+            } focus:outline-2 focus:outline-indigo-600
+             ${error?.message && "outline-2 outline-red-600"} ${className}`}
           />
           {variant === "password" && (
             <button
               type="button"
               onClick={handleChangePasswordVisibility}
               aria-label={"Toggle password visibility"}
-              className="absolute right-[16px]"
+              className="absolute right-4"
             >
               <Icon
                 iconName={inputType === "password" ? "show" : "hide"}
@@ -70,7 +79,7 @@ const Input = forwardRef(
                 ariaLabel={
                   inputType === "password" ? "Show password" : "Hide password"
                 }
-                className="text-gray-600"
+                className="text-gray-600 w-6"
               />
             </button>
           )}
