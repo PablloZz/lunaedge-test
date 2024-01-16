@@ -65,7 +65,7 @@ const Input = forwardRef(
               className="absolute right-[16px]"
             >
               <Icon
-                iconName={inputType === "password" ? "eye" : "eyeSlash"}
+                iconName={inputType === "password" ? "show" : "hide"}
                 ariaRole="img"
                 ariaLabel={
                   inputType === "password" ? "Show password" : "Hide password"
