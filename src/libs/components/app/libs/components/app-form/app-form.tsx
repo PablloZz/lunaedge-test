@@ -53,7 +53,6 @@ const AppForm: React.FC = () => {
         variant="text"
         label="Name:"
         placeholder="Name"
-        required
       />
       <Input
         {...register("lastName", {
@@ -61,10 +60,9 @@ const AppForm: React.FC = () => {
         })}
         error={errors.lastName}
         name="lastName"
-        variant="password"
+        variant="text"
         label="Last Name:"
         placeholder="Last Name"
-        required
       />
       <Select
         multiple

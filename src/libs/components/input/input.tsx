@@ -9,8 +9,6 @@ type Properties = {
   variant: InputType;
   className?: string;
   labelClassName?: string;
-  required?: boolean;
-  disabled?: boolean;
   error: FieldError | undefined;
 } & UseFormRegisterReturn<string>;
 
