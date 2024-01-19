@@ -17,7 +17,7 @@ type Properties = {
   options: SelectOption[];
   hint?: string;
   placeholder: string;
-  onSearchPokemon: (search: string) => void;
+  onSearchOption: (search: string) => void;
   searchQuery: string;
   disabled?: boolean;
 } & (SingleSelectProperties | MultipleSelectProperties);
@@ -33,7 +33,7 @@ const Select: React.FC<Properties> = ({
   badgeVariant,
   badgeIcon,
   badgeColor,
-  onSearchPokemon,
+  onSearchOption,
   searchQuery,
   error,
   disabled,
@@ -50,7 +50,7 @@ const Select: React.FC<Properties> = ({
   const handleCloseSelectMenu = () => {
     setIsOpen(false);
     setHighlightedIndex(FIRST_OPTION_INDEX);
-    onSearchPokemon("");
+    onSearchOption("");
   };
 
   const handleBlur = (event: React.FocusEvent<HTMLDivElement>) => {
@@ -226,12 +226,12 @@ const Select: React.FC<Properties> = ({
           }`}
         >
           <label>
-            <span className="absolute left-[-10000px]">Search a pokemon</span>
+            <span className="absolute left-[-10000px]">Search</span>
             <input
               type="text"
               value={searchQuery}
-              placeholder="Search a pokemon"
-              onChange={event => onSearchPokemon(event.target.value)}
+              placeholder="Search"
+              onChange={event => onSearchOption(event.target.value)}
               className="w-full py-1.5 px-4"
               ref={searchInputRef}
             />
