@@ -9,7 +9,7 @@ type Properties = {
   variant: InputType;
   className?: string;
   labelClassName?: string;
-  error: FieldError | undefined;
+  error?: FieldError;
 } & UseFormRegisterReturn<string>;
 
 const Input = forwardRef(
