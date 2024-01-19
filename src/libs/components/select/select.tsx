@@ -85,6 +85,13 @@ const Select: React.FC<Properties> = ({
     return multiple ? value.includes(option) : option === value;
   };
 
+  const isValueEmpty = () => {
+    if (multiple) {
+      return !Boolean(value.length);
+    }
+    return !Boolean(value);
+  };
+
   useEffect(() => {
     const keyboardHandler = (event: KeyboardEvent) => {
       if (
@@ -168,13 +175,15 @@ const Select: React.FC<Properties> = ({
             : "hover:outline-2 hover:outline-indigo-600 focus:outline-2 focus:outline-indigo-600"
         } ${error?.message ? "outline-2 outline-red-600" : ""}`}
       >
-        <span
-          className={`absolute ${multiple ? "pl-2.5" : "pl-0"} ${
-            disabled ? "text-sky-200" : "text-gray-400"
-          } select-none`}
-        >
-          {placeholder}
-        </span>
+        {isValueEmpty() && (
+          <span
+            className={`absolute ${multiple ? "pl-2.5" : "pl-0"} ${
+              disabled ? "text-sky-200" : "text-gray-400"
+            } select-none`}
+          >
+            {placeholder}
+          </span>
+        )}
         <span className="grow flex items-center gap-1 overflow-x-auto no-scrollbar">
           {multiple
             ? value.map(option => (
@@ -189,13 +198,15 @@ const Select: React.FC<Properties> = ({
               ))
             : value?.label}
         </span>
-        <button
-          type="button"
-          onClick={handleClearOptions}
-          aria-label="Clear options"
-        >
-          <Icon iconName="close" className="w-5 hover:text-gray-600" />
-        </button>
+        {!isValueEmpty() && (
+          <button
+            type="button"
+            onClick={handleClearOptions}
+            aria-label="Clear options"
+          >
+            <Icon iconName="close" className="w-5 hover:text-gray-600" />
+          </button>
+        )}
         <button
           type="button"
           disabled={disabled}
