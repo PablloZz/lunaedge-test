@@ -16,6 +16,7 @@ type Properties = {
   label: string;
   options: SelectOption[];
   hint?: string;
+  placeholder: string;
   onSearchPokemon: (search: string) => void;
   searchQuery: string;
   disabled?: boolean;
@@ -26,6 +27,7 @@ const Select: React.FC<Properties> = ({
   options,
   hint,
   value,
+  placeholder,
   onChange,
   multiple,
   badgeVariant,
@@ -165,6 +167,13 @@ const Select: React.FC<Properties> = ({
             : "hover:outline-2 hover:outline-indigo-600 focus:outline-2 focus:outline-indigo-600"
         }`}
       >
+        <span
+          className={`absolute ${multiple ? "pl-2.5" : "pl-0"} ${
+            disabled ? "text-sky-200" : "text-gray-400"
+          } select-none`}
+        >
+          {placeholder}
+        </span>
         <span className="grow flex items-center gap-1 overflow-x-auto no-scrollbar">
           {multiple
             ? value.map(option => (
