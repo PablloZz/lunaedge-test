@@ -45,7 +45,7 @@ const AppForm: React.FC = () => {
         error={errors.name}
         name="name"
         variant="text"
-        label="Name:"
+        label="Name"
         placeholder="Name"
         required
       />
@@ -56,7 +56,7 @@ const AppForm: React.FC = () => {
         error={errors.lastName}
         name="lastName"
         variant="text"
-        label="Last Name:"
+        label="Last Name"
         placeholder="Last Name"
         required
       />
