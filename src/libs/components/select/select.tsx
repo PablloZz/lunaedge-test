@@ -159,7 +159,9 @@ const Select: React.FC<Properties> = ({
       className="flex flex-col gap-2 w-full max-w-[400px]"
     >
       <div className="flex items-center gap-[5px]">
-        <span id="label">{label}</span>
+        <span id="label" className="font-semibold">
+          {label}
+        </span>
         <Icon iconName="info" className="w-4" />
       </div>
       <div
@@ -184,7 +186,11 @@ const Select: React.FC<Properties> = ({
             {placeholder}
           </span>
         )}
-        <span className="grow flex items-center gap-1 overflow-x-auto no-scrollbar">
+        <span
+          className={`grow flex items-center gap-1 overflow-x-auto no-scrollbar ${
+            !multiple && !isValueEmpty() ? "font-semibold" : ""
+          }`}
+        >
           {multiple
             ? value.map(option => (
                 <Badge
@@ -254,7 +260,7 @@ const Select: React.FC<Properties> = ({
         </ul>
       </div>
       <span className="text-red-600 text-sm">{error?.message}</span>
-      <span className="text-gray-500">{hint}</span>
+      <span className="text-gray-500 text-sm">{hint}</span>
     </div>
   );
 };
