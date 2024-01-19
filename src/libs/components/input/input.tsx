@@ -63,9 +63,10 @@ const Input = forwardRef(
             } pr-4 flex align-center ${
               disabled
                 ? "bg-sky-100 text-sky-200"
-                : "hover:outline-2 hover:outline-indigo-600"
-            } focus:outline-2 focus:outline-indigo-600
-             ${error?.message && "outline-2 outline-red-600"} ${className}`}
+                : "hover:outline-2 hover:outline-indigo-600 focus:outline-2 focus:outline-indigo-600"
+            } ${
+              error?.message ? "outline-2 outline-red-600" : ""
+            } ${className}`}
           />
           {variant === "password" && (
             <button
