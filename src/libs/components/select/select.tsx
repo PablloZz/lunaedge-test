@@ -66,8 +66,8 @@ const Select: React.FC<Properties> = ({
 
   const handleSelectOption = (selectedOption: SelectOption) => {
     if (multiple) {
-      if (value.includes(selectedOption)) {
-        onChange(value.filter(option => option !== selectedOption));
+      if (value.some(option => option.value === selectedOption.value)) {
+        onChange(value.filter(option => option.value !== selectedOption.value));
       } else {
         onChange([...value, selectedOption]);
       }
@@ -82,7 +82,9 @@ const Select: React.FC<Properties> = ({
   };
 
   const isOptionSelected = (option: SelectOption) => {
-    return multiple ? value.includes(option) : option === value;
+    return multiple
+      ? value.some(opt => opt.value === option.value)
+      : option.value === value?.value;
   };
 
   const isValueEmpty = () => {
