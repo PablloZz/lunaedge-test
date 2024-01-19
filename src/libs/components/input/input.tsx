@@ -86,11 +86,16 @@ const Input = forwardRef(
             </button>
           )}
         </div>
-        {required && (
-          <span className="text-gray-500">This information is required.</span>
-        )}
-        {error?.message && (
-          <span className="text-red-600">{error?.message as string}</span>
+        {error?.message ? (
+          <span className="text-red-600 text-sm">
+            {error?.message as string}
+          </span>
+        ) : (
+          required && (
+            <span className="text-gray-500 text-sm">
+              This information is required.
+            </span>
+          )
         )}
       </label>
     );
