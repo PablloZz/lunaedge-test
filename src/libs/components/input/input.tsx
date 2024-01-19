@@ -37,7 +37,10 @@ const Input = forwardRef(
 
     return (
       <label className="flex flex-col gap-2 w-full max-w-[400px]">
-        <span className={labelClassName}>{label}</span>
+        <div className="flex items-center gap-[5px]">
+          <span className={`font-semibold ${labelClassName}`}>{label}</span>
+          <Icon iconName="info" className="w-4" />
+        </div>
         <div className="relative flex items-center">
           {variant === "email" && (
             <Icon
