@@ -35,6 +35,7 @@ const Select: React.FC<Properties> = ({
   badgeColor,
   onSearchPokemon,
   searchQuery,
+  error,
   disabled,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -165,7 +166,7 @@ const Select: React.FC<Properties> = ({
           disabled
             ? "bg-sky-100"
             : "hover:outline-2 hover:outline-indigo-600 focus:outline-2 focus:outline-indigo-600"
-        }`}
+        } ${error?.message ? "outline-2 outline-red-600" : ""}`}
       >
         <span
           className={`absolute ${multiple ? "pl-2.5" : "pl-0"} ${
@@ -241,6 +242,7 @@ const Select: React.FC<Properties> = ({
           ))}
         </ul>
       </div>
+      <span className="text-red-600 text-sm">{error?.message}</span>
       <span className="text-gray-500">{hint}</span>
     </div>
   );

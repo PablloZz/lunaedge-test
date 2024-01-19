@@ -3,6 +3,10 @@ import {
   type BadgeIcon,
   type BadgeVariant,
 } from "../../libs/components/badge/badge.js";
+import {
+  type MultipleSelectError,
+  type SingleSelectError,
+} from "./select-error.type.js";
 import { SelectOption } from "./types.js";
 
 type SingleSelectProperties = {
@@ -12,6 +16,7 @@ type SingleSelectProperties = {
   badgeIcon?: null;
   badgeVariant?: null;
   badgeColor?: null;
+  error?: SingleSelectError;
 };
 
 type MultipleSelectProperties = {
@@ -21,6 +26,7 @@ type MultipleSelectProperties = {
   badgeIcon?: BadgeIcon;
   badgeVariant: BadgeVariant;
   badgeColor: BadgeColor;
+  error?: MultipleSelectError;
 };
 
 export { type SingleSelectProperties, type MultipleSelectProperties };
