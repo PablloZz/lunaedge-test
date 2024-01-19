@@ -1,0 +1,3 @@
+const PREVIOUS_OPTION_INDEX = -1;
+
+export { PREVIOUS_OPTION_INDEX };

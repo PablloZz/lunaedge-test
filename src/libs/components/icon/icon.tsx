@@ -1,20 +1,41 @@
-import Envelope from "~/assets/icons/envelope.icon.svg?react";
-import Eye from "~/assets/icons/eye.icon.svg?react";
-import EyeSlash from "~/assets/icons/eye-slash.icon.svg?react";
-import Star from "~/assets/icons/star.icon.svg?react";
-import CuretDown from "~/assets/icons/curet-down.icon.svg?react";
+import {
+  InformationCircleIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+  EyeIcon,
+  EyeSlashIcon,
+  EnvelopeIcon,
+  StarIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/solid";
 
-type IconName = "envelope" | "eye" | "eyeSlash" | "star" | "curetDown";
+type IconName =
+  | "envelope"
+  | "show"
+  | "hide"
+  | "star"
+  | "curetUp"
+  | "curetDown"
+  | "info"
+  | "close";
 
 const iconNameToIcon: Record<
   IconName,
-  React.FC<React.SVGProps<SVGSVGElement>>
+  React.ForwardRefExoticComponent<
+    Omit<React.SVGProps<SVGSVGElement>, "ref"> & {
+      title?: string | undefined;
+      titleId?: string | undefined;
+    } & React.RefAttributes<SVGSVGElement>
+  >
 > = {
-  envelope: Envelope,
-  eye: Eye,
-  eyeSlash: EyeSlash,
-  star: Star,
-  curetDown: CuretDown,
+  envelope: EnvelopeIcon,
+  show: EyeIcon,
+  hide: EyeSlashIcon,
+  star: StarIcon,
+  curetUp: ChevronUpIcon,
+  curetDown: ChevronDownIcon,
+  info: InformationCircleIcon,
+  close: XMarkIcon,
 };
 
 type Properties = {

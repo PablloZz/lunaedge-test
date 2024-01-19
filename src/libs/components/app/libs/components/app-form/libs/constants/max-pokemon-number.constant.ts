@@ -1,0 +1,3 @@
+const MAX_POKEMON_NUMBER = 4;
+
+export { MAX_POKEMON_NUMBER };
