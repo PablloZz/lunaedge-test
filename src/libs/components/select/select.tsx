@@ -18,6 +18,7 @@ type Properties = {
   hint?: string;
   onSearchPokemon: (search: string) => void;
   searchQuery: string;
+  disabled?: boolean;
 } & (SingleSelectProperties | MultipleSelectProperties);
 
 const Select: React.FC<Properties> = ({
@@ -32,6 +33,7 @@ const Select: React.FC<Properties> = ({
   badgeColor,
   onSearchPokemon,
   searchQuery,
+  disabled,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(FIRST_OPTION_INDEX);
@@ -151,13 +153,17 @@ const Select: React.FC<Properties> = ({
         <Icon iconName="info" className="w-4" />
       </div>
       <div
-        tabIndex={0}
+        tabIndex={disabled ? -1 : 0}
         role="combobox"
         onBlur={handleBlur}
         ref={selectRef}
         className={`relative flex items-center gap-1 w-full h-[40px] outline outline-1 outline-gray-300 rounded-lg py-3 ${
           multiple ? "pl-1.5 pr-4" : "px-4"
-        } hover:outline-2 hover:outline-indigo-600 focus:outline-2 focus:outline-indigo-600`}
+        } ${
+          disabled
+            ? "bg-sky-100"
+            : "hover:outline-2 hover:outline-indigo-600 focus:outline-2 focus:outline-indigo-600"
+        }`}
       >
         <span className="grow flex items-center gap-1 overflow-x-auto no-scrollbar">
           {multiple
@@ -182,12 +188,15 @@ const Select: React.FC<Properties> = ({
         </button>
         <button
           type="button"
+          disabled={disabled}
           onClick={handleToggleSelectMenu}
           aria-label="Toggle select menu"
         >
           <Icon
             iconName={isOpen ? "curetUp" : "curetDown"}
-            className="w-5 hover:text-gray-600"
+            className={`w-5 ${
+              disabled ? "text-sky-200" : "hover:text-gray-600"
+            }`}
           />
         </button>
         <ul
