@@ -42,6 +42,7 @@ const Select: React.FC<Properties> = ({
   disabled,
   onListScrolled,
 }) => {
+  // console.log(options);
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(FIRST_OPTION_INDEX);
   const selectRef = useRef<HTMLDivElement>(null);
@@ -247,17 +248,19 @@ const Select: React.FC<Properties> = ({
             isOpen ? "" : "hidden"
           }`}
         >
-          <label>
-            <span className="absolute left-[-10000px]">Search</span>
-            <input
-              type="text"
-              value={searchQuery}
-              placeholder="Search"
-              onChange={event => onSearchOption(event.target.value)}
-              className="w-full py-1.5 px-4"
-              ref={searchInputRef}
-            />
-          </label>
+          <li>
+            <label>
+              <span className="absolute left-[-10000px]">Search</span>
+              <input
+                type="text"
+                value={searchQuery}
+                placeholder="Search"
+                onChange={event => onSearchOption(event.target.value)}
+                className="w-full py-1.5 px-4"
+                ref={searchInputRef}
+              />
+            </label>
+          </li>
           {options.map((option, index) => (
             <li
               key={option.value}
