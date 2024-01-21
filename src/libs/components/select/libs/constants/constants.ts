@@ -3,3 +3,4 @@ export {
   NEXT_OPTION_INDEX,
   PREVIOUS_OPTION_INDEX,
 } from "./option-index/option-index.js";
+export { FULL_SCROLL_PROGRESS } from "./full-scroll-progress.constant.js";

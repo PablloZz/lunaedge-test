@@ -1,0 +1,3 @@
+const FULL_SCROLL_PROGRESS = 1;
+
+export { FULL_SCROLL_PROGRESS };
