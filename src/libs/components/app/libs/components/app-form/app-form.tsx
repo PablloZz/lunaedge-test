@@ -1,12 +1,15 @@
 import { useForm, Controller } from "react-hook-form";
 import { Button, Input, Select } from "~/libs/components/components.js";
-import { type AppFormFields } from "./libs/types/app-form-fields.type.js";
+import { type AppFormFields } from "./libs/types/types.js";
 import {
   DEFAULT_APP_FORM_VALUES,
+  DEFAULT_QUERY_LIMIT,
   MAX_POKEMON_NUMBER,
+  QUERY_OFFSET_INCREASE_COUNT,
 } from "./libs/constants/constants.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { type SelectOption } from "~/libs/components/select/select.js";
+import { pokemon } from "~/packages/pokemon/pokemon.js";
 
 const AppForm: React.FC = () => {
   const {
@@ -15,22 +18,48 @@ const AppForm: React.FC = () => {
     control,
     formState: { errors },
   } = useForm<AppFormFields>({ defaultValues: DEFAULT_APP_FORM_VALUES });
-  const [pokemon, setPokemon] = useState([
-    { value: 1, label: "First" },
-    { value: 2, label: "Second" },
-    { value: 3, label: "Third" },
-    { value: 4, label: "Fourth" },
-    { value: 5, label: "Fifth" },
-  ]);
+  const [allPokemon, setAllPokemon] = useState<SelectOption[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [pokemonOffset, setPokemonOffset] = useState(0);
+
+  const filteredPokemon = allPokemon.filter(pokemon => {
+    return pokemon.label.startsWith(searchQuery);
+  });
 
   const handleSearchPokemon = (searchQuery: string) => {
     setSearchQuery(searchQuery);
   };
 
-  const filteredPokemon = pokemon.filter(p => p.label.startsWith(searchQuery));
+  const handleSetPokemonOffset = () => {
+    if (!searchQuery) {
+      setPokemonOffset(
+        previousOffset => previousOffset + QUERY_OFFSET_INCREASE_COUNT
+      );
+    }
+  };
 
   const onSubmit = (fields: AppFormFields) => {};
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    pokemon
+      .getPokemon(controller, pokemonOffset, DEFAULT_QUERY_LIMIT)
+      .then(newPokemon => {
+        console.log("fetched");
+        const selectOptionFormPokemon = newPokemon!.map(({ url, name }) => {
+          return { label: name, value: url };
+        });
+        setAllPokemon(pokemon => [...pokemon, ...selectOptionFormPokemon]);
+      })
+      .catch((error): void => {
+        console.error(error);
+      });
+
+    return () => {
+      controller.abort();
+    };
+  }, [pokemonOffset]);
 
   return (
     <form
@@ -84,9 +113,10 @@ const AppForm: React.FC = () => {
             badgeIcon="close"
             onSearchOption={handleSearchPokemon}
             searchQuery={searchQuery}
-            hint="Choose four pokémon"
+            hint="Choose up to 4 pokémon"
             error={errors.pokemon}
             onChange={(pokemon: SelectOption[]) => onChange(pokemon)}
+            onListScrolled={handleSetPokemonOffset}
           />
         )}
       />

@@ -1,0 +1,3 @@
+const DEFAULT_QUERY_LIMIT = 20;
+
+export { DEFAULT_QUERY_LIMIT };
