@@ -42,7 +42,6 @@ const Select: React.FC<Properties> = ({
   disabled,
   onListScrolled,
 }) => {
-  // console.log(options);
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(FIRST_OPTION_INDEX);
   const selectRef = useRef<HTMLDivElement>(null);
