@@ -8,9 +8,11 @@ import {
 } from "./libs/types/types.js";
 import {
   FIRST_OPTION_INDEX,
+  FULL_SCROLL_PROGRESS,
   NEXT_OPTION_INDEX,
   PREVIOUS_OPTION_INDEX,
 } from "./libs/constants/constants.js";
+import { useGetScrollProgress } from "./libs/hooks/hooks.js";
 
 type Properties = {
   label: string;
@@ -20,6 +22,7 @@ type Properties = {
   onSearchOption: (search: string) => void;
   searchQuery: string;
   disabled?: boolean;
+  onListScrolled?: () => void;
 } & (SingleSelectProperties | MultipleSelectProperties);
 
 const Select: React.FC<Properties> = ({
@@ -37,11 +40,15 @@ const Select: React.FC<Properties> = ({
   searchQuery,
   error,
   disabled,
+  onListScrolled,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(FIRST_OPTION_INDEX);
   const selectRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const optionsListRef = useRef<HTMLUListElement>(null);
+  const optionsListScrollProgress =
+    useGetScrollProgress<HTMLUListElement>(optionsListRef);
 
   const handleToggleSelectMenu = () => {
     setIsOpen(previousState => !previousState);
@@ -155,6 +162,12 @@ const Select: React.FC<Properties> = ({
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    if (optionsListScrollProgress === FULL_SCROLL_PROGRESS) {
+      onListScrolled?.();
+    }
+  }, [optionsListScrollProgress]);
+
   return (
     <div
       aria-labelledby="label"
@@ -229,21 +242,24 @@ const Select: React.FC<Properties> = ({
           />
         </button>
         <ul
+          ref={optionsListRef}
           className={`absolute top-full left-0 w-full max-h-[240px] overflow-y-auto border rounded-lg mt-2 bg-white z-10 ${
             isOpen ? "" : "hidden"
           }`}
         >
-          <label>
-            <span className="absolute left-[-10000px]">Search</span>
-            <input
-              type="text"
-              value={searchQuery}
-              placeholder="Search"
-              onChange={event => onSearchOption(event.target.value)}
-              className="w-full py-1.5 px-4"
-              ref={searchInputRef}
-            />
-          </label>
+          <li>
+            <label>
+              <span className="absolute left-[-10000px]">Search</span>
+              <input
+                type="text"
+                value={searchQuery}
+                placeholder="Search"
+                onChange={event => onSearchOption(event.target.value)}
+                className="w-full py-1.5 px-4"
+                ref={searchInputRef}
+              />
+            </label>
+          </li>
           {options.map((option, index) => (
             <li
               key={option.value}

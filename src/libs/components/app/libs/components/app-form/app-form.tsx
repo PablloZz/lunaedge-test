@@ -1,12 +1,14 @@
 import { useForm, Controller } from "react-hook-form";
 import { Button, Input, Select } from "~/libs/components/components.js";
-import { type AppFormFields } from "./libs/types/app-form-fields.type.js";
+import { type AppFormFields } from "./libs/types/types.js";
 import {
   DEFAULT_APP_FORM_VALUES,
-  MAX_POKEMON_NUMBER,
+  REQUIRED_POKEMON_NUMBER,
 } from "./libs/constants/constants.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { type SelectOption } from "~/libs/components/select/select.js";
+import { pokemon } from "~/packages/pokemon/pokemon.js";
+import { PokemonOffsetQuery, PokemonLimitQuery } from "./libs/enums/enums.js";
 
 const AppForm: React.FC = () => {
   const {
@@ -15,22 +17,76 @@ const AppForm: React.FC = () => {
     control,
     formState: { errors },
   } = useForm<AppFormFields>({ defaultValues: DEFAULT_APP_FORM_VALUES });
-  const [pokemon, setPokemon] = useState([
-    { value: 1, label: "First" },
-    { value: 2, label: "Second" },
-    { value: 3, label: "Third" },
-    { value: 4, label: "Fourth" },
-    { value: 5, label: "Fifth" },
-  ]);
+  const [allPokemon, setAllPokemon] = useState<SelectOption[]>([]);
+  const [pokemonForSearch, setPokemonForSearch] = useState<SelectOption[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [pokemonOffset, setPokemonOffset] = useState<number>(
+    PokemonOffsetQuery.ZERO_COUNT
+  );
+
+  const filteredPokemon = searchQuery
+    ? pokemonForSearch.filter(pokemon => {
+        return pokemon.label.startsWith(searchQuery);
+      })
+    : allPokemon;
 
   const handleSearchPokemon = (searchQuery: string) => {
     setSearchQuery(searchQuery);
   };
 
-  const filteredPokemon = pokemon.filter(p => p.label.startsWith(searchQuery));
+  const handleSetPokemonOffset = () => {
+    if (!searchQuery) {
+      setPokemonOffset(
+        previousOffset => previousOffset + PokemonOffsetQuery.INCREASE_COUNT
+      );
+    }
+  };
 
   const onSubmit = (fields: AppFormFields) => {};
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    pokemon
+      .getPokemon(controller, pokemonOffset, PokemonLimitQuery.DEFAULT)
+      .then(newPokemon => {
+        const selectOptionFormPokemon = newPokemon!.map(({ url, name }) => {
+          return { label: name, value: url };
+        });
+        setAllPokemon(pokemon => [...pokemon, ...selectOptionFormPokemon]);
+      })
+      .catch((error): void => {
+        console.error(error);
+      });
+
+    return () => {
+      controller.abort();
+    };
+  }, [pokemonOffset]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    pokemon
+      .getPokemon(
+        controller,
+        PokemonOffsetQuery.ZERO_COUNT,
+        PokemonLimitQuery.MAX
+      )
+      .then(newPokemon => {
+        const selectOptionFormPokemon = newPokemon!.map(({ url, name }) => {
+          return { label: name, value: url };
+        });
+        setPokemonForSearch(selectOptionFormPokemon);
+      })
+      .catch((error): void => {
+        console.error(error);
+      });
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   return (
     <form
@@ -66,7 +122,7 @@ const AppForm: React.FC = () => {
         rules={{
           validate: {
             checkPokemonNumber: pokemon => {
-              if (pokemon.length > MAX_POKEMON_NUMBER) {
+              if (pokemon.length !== REQUIRED_POKEMON_NUMBER) {
                 return "Please, choose four pokémon";
               }
             },
@@ -84,9 +140,10 @@ const AppForm: React.FC = () => {
             badgeIcon="close"
             onSearchOption={handleSearchPokemon}
             searchQuery={searchQuery}
-            hint="Choose four pokémon"
+            hint="Choose 4 pokémon"
             error={errors.pokemon}
             onChange={(pokemon: SelectOption[]) => onChange(pokemon)}
+            onListScrolled={handleSetPokemonOffset}
           />
         )}
       />
