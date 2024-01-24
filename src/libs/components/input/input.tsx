@@ -66,7 +66,7 @@ const Input = forwardRef(
                 : "hover:outline-2 hover:outline-indigo-600 focus:outline-2 focus:outline-indigo-600"
             } ${
               error?.message ? "outline-2 outline-red-600" : ""
-            } ${className}`}
+            } placeholder:text-xs sm:placeholder:text-base ${className}`}
           />
           {variant === "password" && (
             <button

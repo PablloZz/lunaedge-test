@@ -184,7 +184,7 @@ const Select: React.FC<Properties> = ({
         role="combobox"
         onBlur={handleBlur}
         ref={selectRef}
-        className={`relative flex items-center gap-1 w-full h-[40px] outline outline-1 outline-gray-300 rounded-lg py-3 ${
+        className={`relative flex items-center bg-white gap-1 w-full h-[40px] outline outline-1 outline-gray-300 rounded-lg py-3 ${
           multiple ? "pl-1.5 pr-4" : "px-4"
         } ${
           disabled
@@ -196,13 +196,13 @@ const Select: React.FC<Properties> = ({
           <span
             className={`absolute ${multiple ? "pl-2.5" : "pl-0"} ${
               disabled ? "text-sky-200" : "text-gray-400"
-            } select-none`}
+            } text-xs sm:text-base select-none`}
           >
             {placeholder}
           </span>
         )}
         <span
-          className={`grow flex items-center gap-1 overflow-x-auto no-scrollbar ${
+          className={`grow flex items-center flex-wrap sm:flex-nowrap gap-1 h-[40px] p-1 sm:p-0 overflow-x-auto overflow-y-auto no-scrollbar ${
             !multiple && !isValueEmpty() ? "font-semibold" : ""
           }`}
         >

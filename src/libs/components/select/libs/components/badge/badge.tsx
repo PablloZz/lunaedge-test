@@ -27,7 +27,7 @@ const Badge: React.FC<Properties> = ({
     aria-label="Clear the option"
     className={`flex items-center justify-center gap-1.5 py-0.5 px-2.5 ${
       variant === "square" ? "rounded-md" : "rounded-full"
-    } ${getBadgeColorClasses(color, icon).badge}`}
+    } text-xs sm:text-base ${getBadgeColorClasses(color, icon).badge}`}
   >
     {icon === "circle" && (
       <span
