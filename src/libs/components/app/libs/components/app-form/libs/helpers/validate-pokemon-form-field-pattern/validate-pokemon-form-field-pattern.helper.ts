@@ -4,7 +4,7 @@ const validatePokemonFormFieldPattern = (
   message: string
 ) => {
   const isValid = pattern.test(value);
-
+console.log(isValid)
   if (!isValid) {
     return message;
   }
