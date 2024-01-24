@@ -1,14 +1,17 @@
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Button, Input, Select } from "~/libs/components/components.js";
 import { type AppFormFields } from "./libs/types/types.js";
-import {
-  DEFAULT_APP_FORM_VALUES,
-  REQUIRED_POKEMON_NUMBER,
-} from "./libs/constants/constants.js";
-import { useEffect, useState } from "react";
+import { DEFAULT_APP_FORM_VALUES } from "./libs/constants/constants.js";
 import { type SelectOption } from "~/libs/components/select/select.js";
 import { pokemon } from "~/packages/pokemon/pokemon.js";
-import { PokemonOffsetQuery, PokemonLimitQuery } from "./libs/enums/enums.js";
+import {
+  PokemonLimitQuery,
+  PokemonOffsetQuery,
+  PokemonFormValidationPattern,
+  PokemonFormValidationMessage,
+} from "./libs/enums/enums.js";
+import { validatePokemonFormFieldPattern } from "./libs/helpers/helpers.js";
 
 const AppForm: React.FC = () => {
   const {
@@ -96,7 +99,23 @@ const AppForm: React.FC = () => {
     >
       <Input
         {...register("name", {
-          required: "Please, provide your name",
+          required: PokemonFormValidationMessage.NAME_REQUIRED,
+          validate: {
+            validateSymbols: value => {
+              return validatePokemonFormFieldPattern(
+                value,
+                PokemonFormValidationPattern.NAME_ALLOWED_CHARACTERS,
+                PokemonFormValidationMessage.NAME_INCORRECT_CHARACTERS
+              );
+            },
+            validateLength: value => {
+              return validatePokemonFormFieldPattern(
+                value,
+                PokemonFormValidationPattern.NAME_LENGTH,
+                PokemonFormValidationMessage.NAME_INCORRECT_LENGTH
+              );
+            },
+          },
         })}
         error={errors.name}
         name="name"
@@ -107,7 +126,23 @@ const AppForm: React.FC = () => {
       />
       <Input
         {...register("lastName", {
-          required: "Please, provide your last name",
+          required: PokemonFormValidationMessage.LAST_NAME_REQUIRED,
+          validate: {
+            validateSymbols: value => {
+              return validatePokemonFormFieldPattern(
+                value,
+                PokemonFormValidationPattern.LAST_NAME_ALLOWED_CHARACTERS,
+                PokemonFormValidationMessage.LAST_NAME_INCORRECT_CHARACTERS
+              );
+            },
+            validateLength: value => {
+              return validatePokemonFormFieldPattern(
+                value,
+                PokemonFormValidationPattern.LAST_NAME_LENGTH,
+                PokemonFormValidationMessage.LAST_NAME_INCORRECT_LENGTH
+              );
+            },
+          },
         })}
         error={errors.lastName}
         name="lastName"
@@ -121,11 +156,12 @@ const AppForm: React.FC = () => {
         name="pokemon"
         rules={{
           validate: {
-            checkPokemonNumber: pokemon => {
-              if (pokemon.length !== REQUIRED_POKEMON_NUMBER) {
-                return "Please, choose four pokémon";
-              }
-            },
+            pokemonNumber: pokemon =>
+              validatePokemonFormFieldPattern(
+                String(pokemon.length),
+                PokemonFormValidationPattern.REQUIRED_POKEMON_NUMBER,
+                PokemonFormValidationMessage.POKEMON_INCORRECT_NUMBER
+              ),
           },
         }}
         render={({ field: { value, onChange } }) => (
