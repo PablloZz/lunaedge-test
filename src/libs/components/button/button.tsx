@@ -29,7 +29,7 @@ const Button: React.FC<Properties> = ({
   <button
     type={type}
     disabled={disabled}
-    className={`flex ${
+    className={`flex border-0 ${
       icon === "curetDown" ? "row-reverse" : "row"
     } items-center justify-center gap-[5px] text-sm md:text-xl px-2 py-1 sm:px-3 md:px-3.5 lg:px-4 xl:px-5 min-w-fit h-5 sm:h-6 md:h-8 lg:h-10 xl:h-12 rounded ${
       BUTTON_STYLES[variant]
