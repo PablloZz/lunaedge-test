@@ -95,7 +95,7 @@ const AppForm: React.FC = () => {
     <form
       noValidate
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col items-start gap-4"
+      className="flex flex-col items-start gap-4 mt-[100px] max-w-[400px] w-[400px]"
     >
       <Input
         {...register("name", {
@@ -183,7 +183,7 @@ const AppForm: React.FC = () => {
           />
         )}
       />
-      <Button type="submit" variant="outline" icon="star" label="Fight" />
+      <Button type="submit" variant="text" icon="star" label="Fight" />
     </form>
   );
 };
