@@ -19,18 +19,18 @@ Imagine that you are a Pokémon trainer where you have to fill out a form with y
 - The test is mainly focused on making a good **Select component** and **documentation in Storybook** (not required but BIG plus). The rest of the components are not necessary to make them 100% or to make them components but any extra effort will be appreciated.
 - Create story with storybook for at least the select component.
 - Storybook should be compatible with Tailwindcss and documentation should be similar in theme to: https://storybook.newskit.co.uk/?path=/docs/components-select--story-select-default
-- Do request with Axios to this API to extract the necessary Pokemon data: https://pokeapi.co/
-- You can use Icons from HEROICONS library.
-- Use Yarn instead of NPM
-- In the select component you must be able to type to filter the list of Pokemon. Make this filter as you want, either inside the select component or inside the dropdown.
-- All the data should be validated and if the validation isn't correct may show an error message according to design.
-- Component libraries like MUI are banned.
-- The project is empty, you can structure at your convenience to develop the tasks.
-- Designs are located in the assets folder
+- ~~Do request with Axios to this API to extract the necessary Pokemon data: https://pokeapi.co/~~
+- ~~You can use Icons from HEROICONS library.~~
+- ~~Use Yarn instead of NPM~~
+- ~~In the select component you must be able to type to filter the list of Pokemon. Make this filter as you want, either inside the select component or inside the dropdown.~~
+- ~~All the data should be validated and if the validation isn't correct may show an error message according to design.~~
+- ~~Component libraries like MUI are banned.~~
+- ~~The project is empty, you can structure at your convenience to develop the tasks.~~
+- ~~Designs are located in the assets folder~~
 
 ## Validations
-- First name and surname must be between 2 and 12 characters long. Only characters from a-z and A-Z are accepted.
-- For select our team in the select component you only can select 4 Pokemon.
+- ~~First name and surname must be between 2 and 12 characters long. Only characters from a-z and A-Z are accepted.~~
+- ~~For select our team in the select component you only can select 4 Pokemon.~~
 - Before you can see your selected team in, you must have your data filled in and your team completely selected.
 
 ## Important!
