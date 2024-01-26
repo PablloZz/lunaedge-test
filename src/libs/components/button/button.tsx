@@ -25,20 +25,22 @@ const Button: React.FC<Properties> = ({
   disabled,
   icon,
   iconClassName = "",
+  onClick,
 }) => (
   <button
     type={type}
+    onClick={onClick}
     disabled={disabled}
-    className={`flex border-0 ${
+    className={`flex items-center justify-center gap-[5px] border-0 ${
       icon === "curetDown" ? "row-reverse" : "row"
-    } items-center justify-center gap-[5px] text-sm md:text-xl px-2 py-1 sm:px-3 md:px-3.5 lg:px-4 xl:px-5 min-w-fit h-5 sm:h-6 md:h-8 lg:h-10 xl:h-12 rounded ${
+    }  text-xs sm:text-sm md:text-base xl:text-lg min-w-fit px-1 sm:w-20 md:w-28 lg:w-[120px] xl:w-[130px] h-5 sm:h-6 md:h-8 lg:h-10 xl:h-12 rounded ${
       BUTTON_STYLES[variant]
     } ${className}`}
   >
     {icon && (
       <Icon
         iconName={icon}
-        className={`flex items-center justify-center h-[1em] w-[1em] text-inherit ${iconClassName}`}
+        className={`flex items-center justify-center h-[1.3em] w-[1.3em] text-inherit ${iconClassName}`}
       />
     )}
     {label}
