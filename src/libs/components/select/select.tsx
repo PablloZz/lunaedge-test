@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Icon } from "../components.js";
 import { Badge } from "./libs/components/components.js";
 import {
@@ -12,7 +12,7 @@ import {
   NEXT_OPTION_INDEX,
   PREVIOUS_OPTION_INDEX,
 } from "./libs/constants/constants.js";
-import { useGetScrollProgress } from "./libs/hooks/hooks.js";
+import { useGetScrollProgress, useSelect } from "./libs/hooks/hooks.js";
 
 type Properties = {
   label: string;
@@ -42,30 +42,21 @@ const Select: React.FC<Properties> = ({
   disabled,
   onListScrolled,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [highlightedIndex, setHighlightedIndex] = useState(FIRST_OPTION_INDEX);
+  const {
+    isOpen,
+    highlightedIndex,
+    handleBlur,
+    handleOpenSelectOptions,
+    handleToggleSelectOptions,
+    handleCloseSelectOptions,
+    handleSetHighlightedIndex,
+  } = useSelect(onSearchOption);
+
   const selectRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const optionsListRef = useRef<HTMLUListElement>(null);
   const optionsListScrollProgress =
     useGetScrollProgress<HTMLUListElement>(optionsListRef);
-
-  const handleToggleSelectMenu = () => {
-    setIsOpen(previousState => !previousState);
-  };
-
-  const handleCloseSelectMenu = () => {
-    setIsOpen(false);
-    setHighlightedIndex(FIRST_OPTION_INDEX);
-    onSearchOption("");
-  };
-
-  const handleBlur = (event: React.FocusEvent<HTMLDivElement>) => {
-    const isClickOutside = !event.currentTarget.contains(event.relatedTarget);
-    if (isClickOutside) {
-      handleCloseSelectMenu();
-    }
-  };
 
   const handleClearOptions = () => {
     multiple ? onChange([]) : onChange(null);
@@ -81,11 +72,7 @@ const Select: React.FC<Properties> = ({
     } else {
       onChange(selectedOption);
     }
-    handleCloseSelectMenu();
-  };
-
-  const handleChangeHighlightedIndex = (index: number) => {
-    setHighlightedIndex(index);
+    handleCloseSelectOptions();
   };
 
   const isOptionSelected = (option: SelectOption) => {
@@ -113,7 +100,7 @@ const Select: React.FC<Properties> = ({
       switch (event.code) {
         case "Enter":
         case "Space": {
-          handleToggleSelectMenu();
+          handleToggleSelectOptions();
 
           if (isOpen) {
             selectRef.current?.focus();
@@ -124,7 +111,7 @@ const Select: React.FC<Properties> = ({
         case "ArrowDown":
         case "ArrowUp": {
           if (!isOpen) {
-            setIsOpen(true);
+            handleOpenSelectOptions();
             break;
           }
 
@@ -138,12 +125,12 @@ const Select: React.FC<Properties> = ({
             newHighlightedIndex >= FIRST_OPTION_INDEX &&
             newHighlightedIndex < options.length
           ) {
-            setHighlightedIndex(newHighlightedIndex);
+            handleSetHighlightedIndex(newHighlightedIndex);
           }
           break;
         }
         case "Escape": {
-          handleCloseSelectMenu();
+          handleCloseSelectOptions();
           break;
         }
       }
@@ -231,7 +218,7 @@ const Select: React.FC<Properties> = ({
         <button
           type="button"
           disabled={disabled}
-          onClick={handleToggleSelectMenu}
+          onClick={handleToggleSelectOptions}
           aria-label="Toggle select menu"
         >
           <Icon
@@ -265,7 +252,7 @@ const Select: React.FC<Properties> = ({
               key={option.value}
               role="menuitem"
               onClick={() => handleSelectOption(option)}
-              onMouseEnter={() => handleChangeHighlightedIndex(index)}
+              onMouseEnter={() => handleSetHighlightedIndex(index)}
               className={`py-1.5 px-4 cursor-pointer ${
                 isOptionSelected(option) ? "bg-indigo-200" : ""
               } ${
