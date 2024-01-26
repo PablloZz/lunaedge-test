@@ -8,7 +8,7 @@ import { BUTTON_STYLES } from "./libs/constants/constants.js";
 
 type Properties = {
   type: ButtonType;
-  label?: string;
+  label: string;
   variant: ButtonVariant;
   className?: string;
   disabled?: boolean;
