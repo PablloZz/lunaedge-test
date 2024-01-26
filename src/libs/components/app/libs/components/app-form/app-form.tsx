@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Button, Input, Select } from "~/libs/components/components.js";
+import { Button, Input, Modal, Select } from "~/libs/components/components.js";
 import { type AppFormFields } from "./libs/types/types.js";
 import { DEFAULT_APP_FORM_VALUES } from "./libs/constants/constants.js";
 import { type SelectOption } from "~/libs/components/select/select.js";
@@ -12,6 +12,7 @@ import {
   PokemonFormValidationMessage,
 } from "./libs/enums/enums.js";
 import { validatePokemonFormFieldPattern } from "./libs/helpers/helpers.js";
+import { useModal } from "~/libs/hooks/hooks.js";
 
 const AppForm: React.FC = () => {
   const {
@@ -20,6 +21,7 @@ const AppForm: React.FC = () => {
     control,
     formState: { errors },
   } = useForm<AppFormFields>({ defaultValues: DEFAULT_APP_FORM_VALUES });
+  const { isModalOpen, handleOpenModal, handleCloseModal } = useModal();
   const [allPokemon, setAllPokemon] = useState<SelectOption[]>([]);
   const [pokemonForSearch, setPokemonForSearch] = useState<SelectOption[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -183,7 +185,20 @@ const AppForm: React.FC = () => {
           />
         )}
       />
-      <Button type="submit" variant="text" icon="star" label="Fight" />
+      {isModalOpen && (
+        <Modal
+          title="Your Pokémon"
+          description="Description"
+          onClose={handleCloseModal}
+        > </Modal>
+      )}
+      <Button
+        type="submit"
+        variant="text"
+        icon="star"
+        label="Fight"
+        onClick={handleOpenModal}
+      />
     </form>
   );
 };
