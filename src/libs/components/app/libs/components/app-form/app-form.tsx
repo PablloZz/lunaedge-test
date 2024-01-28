@@ -1,33 +1,43 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Button, Input, Modal, Select } from "~/libs/components/components.js";
 import { type AppFormFields } from "./libs/types/types.js";
 import { DEFAULT_APP_FORM_VALUES } from "./libs/constants/constants.js";
 import { type SelectOption } from "~/libs/components/select/select.js";
-import { pokemon } from "~/packages/pokemon/pokemon.js";
 import {
-  PokemonLimitQuery,
   PokemonOffsetQuery,
   PokemonFormValidationPattern,
   PokemonFormValidationMessage,
 } from "./libs/enums/enums.js";
 import { validatePokemonFormFieldPattern } from "./libs/helpers/helpers.js";
 import { useModal } from "~/libs/hooks/hooks.js";
+import { PokemonView } from "../components.js";
+import { useFetchPokemon } from "./libs/hooks/hooks.js";
 
 const AppForm: React.FC = () => {
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting },
+    getValues,
   } = useForm<AppFormFields>({ defaultValues: DEFAULT_APP_FORM_VALUES });
   const { isModalOpen, handleOpenModal, handleCloseModal } = useModal();
-  const [allPokemon, setAllPokemon] = useState<SelectOption[]>([]);
-  const [pokemonForSearch, setPokemonForSearch] = useState<SelectOption[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [pokemonOffset, setPokemonOffset] = useState<number>(
     PokemonOffsetQuery.ZERO_COUNT
   );
+  const {
+    pokemonForSearch,
+    allPokemon,
+    isSelectedPokemonLoading,
+    selectedPokemon,
+  } = useFetchPokemon({
+    pokemonOffset,
+    isValid,
+    isSubmitting,
+    selectedPokemonOptions: getValues("pokemon"),
+  });
 
   const filteredPokemon = searchQuery
     ? pokemonForSearch.filter(pokemon => {
@@ -47,51 +57,9 @@ const AppForm: React.FC = () => {
     }
   };
 
-  const onSubmit = (fields: AppFormFields) => {};
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    pokemon
-      .getPokemon(controller, pokemonOffset, PokemonLimitQuery.DEFAULT)
-      .then(newPokemon => {
-        const selectOptionFormPokemon = newPokemon!.map(({ url, name }) => {
-          return { label: name, value: url };
-        });
-        setAllPokemon(pokemon => [...pokemon, ...selectOptionFormPokemon]);
-      })
-      .catch((error): void => {
-        console.error(error);
-      });
-
-    return () => {
-      controller.abort();
-    };
-  }, [pokemonOffset]);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    pokemon
-      .getPokemon(
-        controller,
-        PokemonOffsetQuery.ZERO_COUNT,
-        PokemonLimitQuery.MAX
-      )
-      .then(newPokemon => {
-        const selectOptionFormPokemon = newPokemon!.map(({ url, name }) => {
-          return { label: name, value: url };
-        });
-        setPokemonForSearch(selectOptionFormPokemon);
-      })
-      .catch((error): void => {
-        console.error(error);
-      });
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
+  const onSubmit = () => {
+    handleOpenModal();
+  };
 
   return (
     <form
@@ -185,19 +153,23 @@ const AppForm: React.FC = () => {
           />
         )}
       />
-      {isModalOpen && (
+      {isModalOpen && Boolean(selectedPokemon.length) && (
         <Modal
           title="Your Pokémon"
-          description="Description"
+          description={`Trainer: ${getValues("name")} ${getValues("lastName")}`}
           onClose={handleCloseModal}
-        > </Modal>
+        >
+          {selectedPokemon.map(pokemon => (
+            <PokemonView {...pokemon} />
+          ))}
+        </Modal>
       )}
       <Button
         type="submit"
         variant="text"
         icon="star"
         label="Fight"
-        onClick={handleOpenModal}
+        isLoading={isSelectedPokemonLoading}
       />
     </form>
   );
