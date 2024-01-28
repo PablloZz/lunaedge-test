@@ -15,6 +15,7 @@ type Properties = {
   icon?: ButtonIcon;
   iconClassName?: string;
   onClick?: (() => void) | ((event: React.MouseEvent) => void);
+  isLoading?: boolean;
 };
 
 const Button: React.FC<Properties> = ({
@@ -26,6 +27,7 @@ const Button: React.FC<Properties> = ({
   icon,
   iconClassName = "",
   onClick,
+  isLoading,
 }) => (
   <button
     type={type}
@@ -43,7 +45,7 @@ const Button: React.FC<Properties> = ({
         className={`flex items-center justify-center h-[1.3em] w-[1.3em] text-inherit ${iconClassName}`}
       />
     )}
-    {label}
+    {isLoading ? "Loading..." : label}
   </button>
 );
 
