@@ -24,8 +24,8 @@ type MultipleSelectProperties = {
   value: SelectOption[];
   onChange: (value: SelectOption[]) => void;
   badgeIcon?: BadgeIcon;
-  badgeVariant: BadgeVariant;
-  badgeColor: BadgeColor;
+  badgeVariant?: BadgeVariant;
+  badgeColor?: BadgeColor;
   error?: MultipleSelectError;
 };
 

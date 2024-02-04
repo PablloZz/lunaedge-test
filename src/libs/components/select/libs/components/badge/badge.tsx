@@ -8,18 +8,18 @@ import { getBadgeColorClasses } from "./libs/helpers/helpers.js";
 
 type Properties = {
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
   icon?: BadgeIcon;
-  variant: BadgeVariant;
-  color: BadgeColor;
+  variant?: BadgeVariant;
+  color?: BadgeColor;
 };
 
 const Badge: React.FC<Properties> = ({
   label,
   onClick,
   icon,
-  variant,
-  color,
+  variant = "circle",
+  color = "gray",
 }) => (
   <button
     type="button"
