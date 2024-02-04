@@ -49,6 +49,7 @@ const Badge: React.FC<Properties> = ({
 );
 
 export { Badge };
+export { type Properties as BadgeProperties };
 export {
   type BadgeIcon,
   type BadgeVariant,
