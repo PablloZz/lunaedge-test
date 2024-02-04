@@ -16,9 +16,9 @@ Imagine that you are a Pokémon trainer where you have to fill out a form with y
 - React hook form
 
 ## Information
-- The test is mainly focused on making a good **Select component** and **documentation in Storybook** (not required but BIG plus). The rest of the components are not necessary to make them 100% or to make them components but any extra effort will be appreciated.
-- Create story with storybook for at least the select component.
-- Storybook should be compatible with Tailwindcss and documentation should be similar in theme to: https://storybook.newskit.co.uk/?path=/docs/components-select--story-select-default
+- ~~The test is mainly focused on making a good **Select component** and **documentation in Storybook** (not required but BIG plus). The rest of the components are not necessary to make them 100% or to make them components but any extra effort will be appreciated.~~
+- ~~Create story with storybook for at least the select component.~~
+- ~~Storybook should be compatible with Tailwindcss and documentation should be similar in theme to: https://storybook.newskit.co.uk/?path=/docs/components-select--story-select-default~~
 - ~~Do request with Axios to this API to extract the necessary Pokemon data: https://pokeapi.co/~~
 - ~~You can use Icons from HEROICONS library.~~
 - ~~Use Yarn instead of NPM~~
