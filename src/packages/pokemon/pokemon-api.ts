@@ -1,3 +1,4 @@
+import axios from "axios";
 import { SelectedPokemon } from "~/libs/types/types.js";
 
 class Pokemon {
@@ -8,14 +9,11 @@ class Pokemon {
 
   async getPokemon(controller: AbortController, offset: number, limit: number) {
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `${this.url}?offset=${offset}&limit=${limit}`,
-        {
-          signal: controller.signal,
-        }
+        { signal: controller.signal }
       );
-      const data = await response.json();
-      return data.results as { name: string; url: string }[];
+      return response.data.results as { name: string; url: string }[];
     } catch (error) {
       console.error(error);
     }
@@ -23,13 +21,16 @@ class Pokemon {
 
   async getSinglePokemon(controller: AbortController, endpoint: string) {
     try {
-      const response = await fetch(endpoint, { signal: controller.signal });
-      const data = await response.json();
+      const response = await axios.get(endpoint, { signal: controller.signal });
+      const {
+        data: { name, sprites },
+      } = response;
+
       return {
-        name: data.name,
+        name: name,
         sprites: {
-          front: data.sprites.front_default,
-          back: data.sprites.back_default,
+          front: sprites.front_default,
+          back: sprites.back_default,
         },
       } as SelectedPokemon;
     } catch (error) {

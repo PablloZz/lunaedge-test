@@ -8,24 +8,24 @@ import { getBadgeColorClasses } from "./libs/helpers/helpers.js";
 
 type Properties = {
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
   icon?: BadgeIcon;
-  variant: BadgeVariant;
-  color: BadgeColor;
+  variant?: BadgeVariant;
+  color?: BadgeColor;
 };
 
 const Badge: React.FC<Properties> = ({
   label,
   onClick,
   icon,
-  variant,
-  color,
+  variant = "circle",
+  color = "gray",
 }) => (
   <button
     type="button"
     onClick={onClick}
     aria-label="Clear the option"
-    className={`flex items-center justify-center gap-1.5 py-0.5 px-2.5 ${
+    className={`flex items-center justify-center gap-1.5 whitespace-nowrap py-0.5 px-2.5 ${
       variant === "square" ? "rounded-md" : "rounded-full"
     } text-xs sm:text-base ${getBadgeColorClasses(color, icon).badge}`}
   >
@@ -49,6 +49,7 @@ const Badge: React.FC<Properties> = ({
 );
 
 export { Badge };
+export { type Properties as BadgeProperties };
 export {
   type BadgeIcon,
   type BadgeVariant,

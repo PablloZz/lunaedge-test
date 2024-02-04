@@ -271,4 +271,4 @@ const Select: React.FC<Properties> = ({
 };
 
 export { Select };
-export { type SelectOption };
+export { type SelectOption, type Properties as SelectProperties };
